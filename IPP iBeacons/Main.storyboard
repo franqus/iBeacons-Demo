@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Npk-5Y-ByU">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="KDW-Nj-t2G">
+            <objects>
+                <viewController id="Npk-5Y-ByU" customClass="IPPViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tHe-lQ-cuN"/>
+                        <viewControllerLayoutGuide type="bottom" id="l7I-aw-2ta"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cEp-hS-c7m">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="7da-ds-Uac">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="50" id="0LM-PV-3yW">
+                                    <rect key="frame" x="0.0" y="109" width="320" height="278"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="OperationCell" id="wcK-XQ-lEQ">
+                                        <rect key="frame" x="0.0" y="55" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wcK-XQ-lEQ" id="OXD-9y-Ku2">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nZX-dY-8ZV">
+                                                    <rect key="frame" x="251" y="6" width="51" height="31"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="nZX-dY-8ZV" firstAttribute="centerY" secondItem="OXD-9y-Ku2" secondAttribute="centerY" id="LAr-07-RET"/>
+                                                <constraint firstAttribute="trailing" secondItem="nZX-dY-8ZV" secondAttribute="trailing" constant="20" symbolic="YES" id="uuZ-kM-NMY"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="accessoryView" destination="nZX-dY-8ZV" id="U59-Po-JUt"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Npk-5Y-ByU" id="ekW-Uv-42t"/>
+                                    <outlet property="delegate" destination="Npk-5Y-ByU" id="6zh-OM-CFE"/>
+                                </connections>
+                            </tableView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DNi-DR-3Z2">
+                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="IPP iBeacons" id="cgK-WN-cjp"/>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="DNi-DR-3Z2" firstAttribute="leading" secondItem="7da-ds-Uac" secondAttribute="leading" id="A91-T7-P8J"/>
+                            <constraint firstItem="7da-ds-Uac" firstAttribute="top" secondItem="tHe-lQ-cuN" secondAttribute="bottom" constant="44" id="DQd-4B-3ex"/>
+                            <constraint firstItem="DNi-DR-3Z2" firstAttribute="bottom" secondItem="7da-ds-Uac" secondAttribute="top" id="HPT-MP-p0Y"/>
+                            <constraint firstItem="DNi-DR-3Z2" firstAttribute="trailing" secondItem="7da-ds-Uac" secondAttribute="trailing" id="Nv7-wg-ggf"/>
+                            <constraint firstItem="l7I-aw-2ta" firstAttribute="top" secondItem="7da-ds-Uac" secondAttribute="bottom" id="Q0b-Pu-WY3"/>
+                            <constraint firstItem="7da-ds-Uac" firstAttribute="leading" secondItem="cEp-hS-c7m" secondAttribute="leading" id="RaC-xX-2MA"/>
+                            <constraint firstAttribute="trailing" secondItem="7da-ds-Uac" secondAttribute="trailing" id="bVh-QX-0EC"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="beaconTableView" destination="7da-ds-Uac" id="biv-Xm-2go"/>
+                        <outlet property="proximityLabel" destination="0LM-PV-3yW" id="fmK-bC-gF3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="88a-QM-hBK" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
