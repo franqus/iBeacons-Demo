@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 HS Mannheim. All rights reserved.
 //
 
+#import <CoreGraphics/CoreGraphics.h>
 #import "IPPViewController.h"
 
 //20589E2D-63B0-4F21-B6CB-8DE5C0F7ADCD
@@ -46,6 +47,7 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 @property (nonatomic, weak) UISwitch *advertisingSwitch;
 @property (nonatomic, weak) UISwitch *rangingSwitch;
 
+
 @end
 
 @implementation IPPViewController
@@ -71,12 +73,18 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     
     NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:kUUID];
     self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:kIdentifier];
+	self.beaconRegion.notifyEntryStateOnDisplay = YES;
+	self.beaconRegion.notifyOnEntry = YES;
+	self.beaconRegion.notifyOnExit = YES;
+	
+
 }
 
 - (void)turnOnRanging
 {
     NSLog(@"Turning on ranging...");
-    
+    [proximityLabel setAlpha:1.0];
+	
     if (![CLLocationManager isRangingAvailable]) {
         NSLog(@"Couldn't turn on ranging: Ranging is not available.");
         self.rangingSwitch.on = NO;
@@ -108,8 +116,12 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 {
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
+
+	//
+	[self.locationManager startMonitoringForRegion:self.beaconRegion];
+	//
     
-    self.detectedBeacons = [NSArray array];
+	self.detectedBeacons = [NSArray array];
     
     [self turnOnRanging];
 }
@@ -131,6 +143,7 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
         [self.beaconTableView deleteSections:deletedSections withRowAnimation:UITableViewRowAnimationFade];
     [self.beaconTableView endUpdates];
 	
+	[proximityLabel setAlpha:0.0];
     NSLog(@"Turned off ranging.");
 }
 
@@ -255,6 +268,10 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 - (void)locationManager:(CLLocationManager *)manager
         didRangeBeacons:(NSArray *)beacons
                inRegion:(CLBeaconRegion *)region {
+	//
+	[manager startMonitoringForRegion:region];
+	//
+	
     NSArray *filteredBeacons = [self filteredBeacons:beacons];
     
     if (filteredBeacons.count == 0) {
@@ -286,6 +303,66 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     if (reloadedRows)
         [self.beaconTableView reloadRowsAtIndexPaths:reloadedRows withRowAnimation:UITableViewRowAnimationNone];
     [self.beaconTableView endUpdates];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region{
+//	if([region isKindOfClass:[CLBeaconRegion class]]){
+//		CLBeaconRegion* beaconRegion = (CLBeaconRegion*)region;
+//	}
+	
+//	NSLog(@"state = %d", state);
+	if (state == CLRegionStateInside) {
+		//Start Ranging
+//		[manager startRangingBeaconsInRegion:region];
+//		[manager startMonitoringForRegion:region];
+	}
+//	else{
+//		//Stop Ranging
+////		[manager stopRangingBeaconsInRegion:region];
+//		[manager stopMonitoringForRegion:region];
+//	}
+}
+
+-(void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region{
+//	NSLog(@"didStartMonitoringForRegion");
+}
+
+-(void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region{
+	NSLog(@"didEnterRegion");
+	
+
+	
+	// Set up Local Notifications
+	if(![[NSUserDefaults standardUserDefaults] boolForKey:@"didEnterRegion"]){
+		UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+		NSDate *now = [NSDate date];
+		localNotification.fireDate = now;
+		localNotification.alertBody = [NSString stringWithFormat:@"Welcome to the IPP lecture!"];
+		localNotification.soundName = UILocalNotificationDefaultSoundName;
+		[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+	}
+	NSUserDefaults* standardUserDefaults = [NSUserDefaults standardUserDefaults];
+	[standardUserDefaults setBool:YES forKey:@"didEnterRegion"];
+	[standardUserDefaults synchronize];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region{
+//	NSLog(@"didExitRegion");
+
+	
+    // Set up Local Notifications
+	if(![[NSUserDefaults standardUserDefaults] boolForKey:@"didExitRegion"]){
+		UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+		NSDate *now = [NSDate date];
+		localNotification.fireDate = now;
+		localNotification.alertBody = [NSString stringWithFormat:@"Goodbye - see you next time!"];
+		localNotification.soundName = UILocalNotificationDefaultSoundName;
+		[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+	}
+	
+	NSUserDefaults* standardUserDefaults = [NSUserDefaults standardUserDefaults];
+	[standardUserDefaults setBool:YES forKey:@"didExitRegion"];
+	[standardUserDefaults synchronize];
 }
 
 #pragma mark - Beacon advertising
@@ -374,8 +451,10 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
             proximity = @"Near";
             break;
         case CLProximityImmediate:
-            proximity = @"Immediate";
+            
+			proximity = @"Immediate";
             break;
+			
         case CLProximityFar:
             proximity = @"Far";
             break;
@@ -430,16 +509,19 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 			
 			
 			switch (beacon.proximity) {
-				case CLProximityNear:
-					[proximityLabel setBackgroundColor:[UIColor orangeColor]];
-					[proximityLabel setText:@"NEAR"];
-					break;
 				case CLProximityImmediate:
+					[proximityLabel setAlpha:1.0];
 					[proximityLabel setBackgroundColor:[UIColor greenColor]];
 					[proximityLabel setText:@"IMMEDIATE"];
 					break;
-				case CLProximityFar:
+				case CLProximityNear:
+					[proximityLabel setAlpha:1.0];
 					[proximityLabel setBackgroundColor:[UIColor yellowColor]];
+					[proximityLabel setText:@"NEAR"];
+					break;
+				case CLProximityFar:
+					[proximityLabel setAlpha:1.0];
+					[proximityLabel setBackgroundColor:[UIColor orangeColor]];
 					[proximityLabel setText:@"FAR"];
 					break;
 				case CLProximityUnknown:
