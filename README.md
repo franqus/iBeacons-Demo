@@ -12,6 +12,7 @@ Little demo project for playing around with Apple's iBeacon&trade; technology. I
 - Advertise an iBeacon 
 - Compatible with > iPhone 5 / > iPad 3 (Bluetooth 4.0 LE required)
 
+--------   
 
 The MIT License (MIT)
 
