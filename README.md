@@ -1,6 +1,3 @@
-ippibeacons
-===========
-
 iBeacons Demo
 --------
 Little demo project for playing around with Apple's iBeacon&trade; technology. It's designed to use two iOS devices (one for advertising, one for ranging). But it can be easily adapted to work with a dedicated hardware beacon aswell.
