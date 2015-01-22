@@ -7,7 +7,7 @@ Little demo project for playing around with Apple's iBeacon&trade; technology. I
 - Universal app for iPhone and iPad
 - Range for iBeacons
 - Advertise an iBeacon 
-- Compatible with > iPhone 5 / > iPad 3 (Bluetooth 4.0 LE required)
+- Compatible with at least iPhone 5 / iPad 3 (Bluetooth 4.0 LE required)
 
 --------   
 
